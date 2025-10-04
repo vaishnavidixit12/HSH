@@ -1,0 +1,8 @@
+openai>=1.30.0
+sympy>=1.12
+pint>=0.23
+pydantic>=2.8
+pydantic-settings>=2.3
+streamlit>=1.36
+pytest>=8.2
+rich>=13.7
