@@ -1,8 +1,9 @@
-openai>=1.30.0
+fastapi>=0.111
+uvicorn[standard]>=0.30
+python-dotenv>=1.0
+pydantic>=2.7
+PyYAML>=6.0
 sympy>=1.12
-pint>=0.23
-pydantic>=2.8
-pydantic-settings>=2.3
-streamlit>=1.36
-pytest>=8.2
-rich>=13.7
+requests>=2.31
+streamlit>=1.37
+openai>=1.40

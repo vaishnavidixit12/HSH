@@ -1,0 +1,1072 @@
+meta:
+  version: 1
+  system_units: SI
+  notes: |
+    Florida HS catalog (B.E.S.T. Math + Physics 1 topics). This file follows the SPS solver schema.
+
+constants:
+  pi:
+    value: 3.141592653589793
+    unit: dimensionless
+    tags:
+      - math
+      - geometry
+      - trig
+    notes: "Circle/Trig constant"
+  g:
+    value: 9.80665
+    unit: "m/s^2"
+    tags:
+      - mechanics
+      - earth_standard
+    notes: "Standard gravity (near Earth surface)"
+  c:
+    value: 299792458
+    unit: "m/s"
+    tags:
+      - waves
+      - em
+      - modern
+    notes: "Speed of light in vacuum"
+  k_e:
+    value: 8.9875517923e9
+    unit: "N*m^2/C^2"
+    tags:
+      - electricity
+      - coulomb
+    notes: "Coulomb constant (1/(4πϵ0))"
+  mu0:
+    value: 1.25663706212e-6
+    unit: "N/A^2"
+    tags:
+      - magnetism
+    notes: "Vacuum permeability"
+  R_universal_gas:
+    value: 8.314462618
+    unit: "J/(mol*K)"
+    tags:
+      - thermo
+    notes: "Universal gas constant (for optional thermo problems)"
+  sigma_stefan:
+    value: 5.670374419e-8
+    unit: "W/(m^2*K^4)"
+    tags:
+      - thermo
+      - radiation
+    notes: "Stefan–Boltzmann constant (optional honors)"
+
+domains:
+
+  math:
+    topics:
+
+      algebra:
+        formulas:
+
+          - id: linear_slope_two_points
+            name: Slope from two points
+            eq: m = (y2 - y1) / (x2 - x1)
+            rhs: m
+            variables:
+              m:   { unit: dimensionless }
+              y2:  { unit: dimensionless }
+              y1:  { unit: dimensionless }
+              x2:  { unit: dimensionless }
+              x1:  { unit: dimensionless }
+            tags:
+              - linear
+              - slope
+              - algebra
+            applicability:
+              requires_keywords_any:
+                - slope
+                - line
+                - linear
+            rearrangements: true
+            priority: 0.7
+
+          - id: linear_point_slope_to_slope_intercept
+            name: y = mx + b from point-slope
+            eq: b = y1 - m*x1
+            rhs: b
+            variables:
+              b:  { unit: dimensionless }
+              y1: { unit: dimensionless }
+              m:  { unit: dimensionless }
+              x1: { unit: dimensionless }
+            tags:
+              - linear
+              - intercept
+              - algebra
+            applicability:
+              requires_keywords_any:
+                - intercept
+                - slope
+                - point-slope
+                - y=mx+b
+            rearrangements: true
+            priority: 0.6
+
+          - id: system_two_linear_cramers
+            name: Solve 2x2 linear system (Cramers rule) for x
+            eq: x = (c1*b2 - b1*c2) / (a1*b2 - b1*a2)
+            rhs: x
+            variables:
+              x:  { unit: dimensionless }
+              a1: { unit: dimensionless }  # a1*x + b1*y = c1
+              b1: { unit: dimensionless }
+              c1: { unit: dimensionless }
+              a2: { unit: dimensionless }  # a2*x + b2*y = c2
+              b2: { unit: dimensionless }
+              c2: { unit: dimensionless }
+            tags:
+              - systems
+              - linear
+              - algebra
+            applicability:
+              requires_keywords_any:
+                - system
+                - solve
+                - two equations
+            rearrangements: false
+            priority: 0.5
+
+          - id: quadratic_formula_pos
+            name: Quadratic formula (positive root)
+            eq: x = (-b + sqrt(b**2 - 4*a*c)) / (2*a)
+            rhs: x
+            variables:
+              a: { unit: dimensionless }
+              b: { unit: dimensionless }
+              c: { unit: dimensionless }
+            tags:
+              - quadratic
+              - roots
+              - solve
+              - algebra
+            applicability:
+              requires_keywords_any:
+                - quadratic
+                - roots
+                - solve
+            rearrangements: false
+            priority: 1.0
+
+          - id: quadratic_formula_neg
+            name: Quadratic formula (negative root)
+            eq: x = (-b - sqrt(b**2 - 4*a*c)) / (2*a)
+            rhs: x
+            variables:
+              a: { unit: dimensionless }
+              b: { unit: dimensionless }
+              c: { unit: dimensionless }
+            tags:
+              - quadratic
+              - roots
+              - solve
+              - algebra
+            applicability:
+              requires_keywords_any:
+                - quadratic
+                - roots
+                - solve
+            rearrangements: false
+            priority: 1.0
+
+          - id: exponential_growth
+            name: Exponential growth model
+            eq: N = N0 * (a**t)
+            rhs: N
+            variables:
+              N:  { unit: dimensionless, aliases: [amount] }
+              N0: { unit: dimensionless, aliases: [initial] }
+              a:  { unit: dimensionless, aliases: [growth_factor] }
+              t:  { unit: dimensionless }
+            tags:
+              - exponential
+              - growth
+            applicability:
+              requires_keywords_any:
+                - exponential
+                - growth
+                - percent
+            rearrangements: true
+            priority: 0.7
+
+          - id: exponential_continuous
+            name: Continuous growth/decay
+            eq: N = N0 * exp(k*t)
+            rhs: N
+            variables:
+              N:  { unit: dimensionless }
+              N0: { unit: dimensionless }
+              k:  { unit: "1/s", aliases: [rate] }
+              t:  { unit: s, aliases: [time] }
+            tags:
+              - exponential
+              - modeling
+            applicability:
+              requires_keywords_any:
+                - continuous
+                - exponential
+                - decay
+                - growth
+            rearrangements: true
+            priority: 0.6
+
+          - id: logarithm_change_of_base
+            name: Change of base
+            eq: logb_a = log10(a) / log10(b)
+            rhs: logb_a
+            variables:
+              logb_a: { unit: dimensionless }
+              a: { unit: dimensionless }
+              b: { unit: dimensionless }
+            tags:
+              - logarithm
+              - change_of_base
+            applicability:
+              requires_keywords_any:
+                - log
+                - change of base
+            rearrangements: false
+            priority: 0.5
+
+      geometry:
+        formulas:
+
+          - id: distance_coordinate
+            name: Distance formula (coordinate plane)
+            eq: d = sqrt((x2 - x1)**2 + (y2 - y1)**2)
+            rhs: d
+            variables:
+              d:  { unit: m }
+              x1: { unit: m }
+              x2: { unit: m }
+              y1: { unit: m }
+              y2: { unit: m }
+            tags:
+              - geometry
+              - coordinate
+              - distance
+            applicability:
+              requires_keywords_any:
+                - distance
+                - coordinate
+                - points
+            rearrangements: false
+            priority: 0.8
+
+          - id: midpoint
+            name: Midpoint formula (x-coordinate)
+            eq: xm = (x1 + x2) / 2
+            rhs: xm
+            variables:
+              xm: { unit: m }
+              x1: { unit: m }
+              x2: { unit: m }
+            tags:
+              - geometry
+              - coordinate
+              - midpoint
+            applicability:
+              requires_keywords_any:
+                - midpoint
+                - coordinate
+            rearrangements: false
+            priority: 0.4
+
+          - id: circle_circumference
+            name: Circumference of a circle
+            eq: C = 2 * pi * r
+            rhs: C
+            variables:
+              C: { unit: m }
+              r: { unit: m, aliases: [radius] }
+              pi: { unit: dimensionless, source: constant, key: pi }
+            tags:
+              - circle
+              - geometry
+              - circumference
+            applicability:
+              requires_keywords_any:
+                - circle
+                - circumference
+                - perimeter
+            rearrangements: true
+            priority: 0.9
+
+          - id: circle_area
+            name: Area of a circle
+            eq: A = pi * r**2
+            rhs: A
+            variables:
+              A: { unit: "m^2" }
+              r: { unit: m }
+              pi: { unit: dimensionless, source: constant, key: pi }
+            tags:
+              - circle
+              - geometry
+              - area
+            applicability:
+              requires_keywords_any:
+                - circle
+                - area
+            rearrangements: true
+            priority: 0.9
+
+          - id: triangle_area
+            name: Area of a triangle
+            eq: A = 0.5 * b * h
+            rhs: A
+            variables:
+              A: { unit: "m^2" }
+              b: { unit: m, aliases: [base] }
+              h: { unit: m, aliases: [height] }
+            tags:
+              - triangle
+              - geometry
+              - area
+            applicability:
+              requires_keywords_any:
+                - triangle
+                - area
+            rearrangements: true
+            priority: 0.8
+
+          - id: pythagorean_thm
+            name: Pythagorean theorem (hypotenuse)
+            eq: c = sqrt(a**2 + b**2)
+            rhs: c
+            variables:
+              c: { unit: m }
+              a: { unit: m }
+              b: { unit: m }
+            tags:
+              - right_triangle
+              - geometry
+            applicability:
+              requires_keywords_any:
+                - pythagorean
+                - right
+                - hypotenuse
+            rearrangements: true
+            priority: 1.0
+
+      trigonometry:
+        formulas:
+
+          - id: sohcahtoa_sin
+            name: Right-triangle sine
+            eq: sin_theta = opp / hyp
+            rhs: sin_theta
+            variables:
+              sin_theta: { unit: dimensionless }
+              opp: { unit: m, aliases: [opposite] }
+              hyp: { unit: m, aliases: [hypotenuse] }
+            tags:
+              - trig
+              - right_triangle
+              - sine
+            applicability:
+              requires_keywords_any:
+                - trig
+                - sine
+                - right triangle
+            rearrangements: true
+            priority: 0.7
+
+          - id: law_of_sines_side
+            name: Law of sines (solve a)
+            eq: a = (sin(A) * b) / sin(B)
+            rhs: a
+            variables:
+              a: { unit: m }
+              A: { unit: rad, aliases: [angle_A] }
+              b: { unit: m }
+              B: { unit: rad, aliases: [angle_B] }
+            tags:
+              - trig
+              - triangles
+              - law_of_sines
+            applicability:
+              requires_keywords_any:
+                - law of sines
+                - triangle
+                - non-right
+            rearrangements: true
+            priority: 0.6
+
+          - id: law_of_cosines_side
+            name: Law of cosines (solve c)
+            eq: c = sqrt(a**2 + b**2 - 2*a*b*cos(C))
+            rhs: c
+            variables:
+              c: { unit: m }
+              a: { unit: m }
+              b: { unit: m }
+              C: { unit: rad }
+            tags:
+              - trig
+              - triangles
+              - law_of_cosines
+            applicability:
+              requires_keywords_any:
+                - law of cosines
+                - triangle
+            rearrangements: false
+            priority: 0.8
+
+      statistics:
+        formulas:
+
+          - id: mean_average
+            name: Arithmetic mean
+            eq: mean = (sum_x) / n
+            rhs: mean
+            variables:
+              mean:  { unit: dimensionless }
+              sum_x: { unit: dimensionless }
+              n:     { unit: dimensionless }
+            tags:
+              - statistics
+              - average
+              - mean
+            applicability:
+              requires_keywords_any:
+                - mean
+                - average
+            rearrangements: false
+            priority: 0.4
+
+          - id: stddev_population
+            name: Population standard deviation
+            eq: sigma = sqrt( (sum_sq - (sum_x**2)/n ) / n )
+            rhs: sigma
+            variables:
+              sigma:  { unit: dimensionless }
+              sum_sq: { unit: dimensionless, aliases: [sum_of_squares] }
+              sum_x:  { unit: dimensionless }
+              n:      { unit: dimensionless }
+            tags:
+              - statistics
+              - dispersion
+              - standard_deviation
+            applicability:
+              requires_keywords_any:
+                - standard deviation
+                - population
+            rearrangements: false
+            priority: 0.4
+
+      financial:
+        formulas:
+
+          - id: simple_interest
+            name: Simple interest
+            eq: I = P * r * t
+            rhs: I
+            variables:
+              I: { unit: "$/dimensionless" }
+              P: { unit: "$" }
+              r: { unit: "1/s", aliases: [rate] }
+              t: { unit: s, aliases: [time] }
+            tags:
+              - finance
+              - simple_interest
+            applicability:
+              requires_keywords_any:
+                - simple interest
+                - finance
+            rearrangements: true
+            priority: 0.6
+
+          - id: compound_interest
+            name: Compound interest (discrete compounding)
+            eq: A = P * (1 + r/n)**(n*t)
+            rhs: A
+            variables:
+              A: { unit: "$" }
+              P: { unit: "$" }
+              r: { unit: "1/s" }
+              n: { unit: "1/s", aliases: [per_year] }
+              t: { unit: s }
+            tags:
+              - finance
+              - compound_interest
+            applicability:
+              requires_keywords_any:
+                - compound interest
+                - finance
+                - growth
+            rearrangements: true
+            priority: 0.7
+
+  physics:
+    topics:
+
+      kinematics:
+        formulas:
+          - id: projectile_horizontal_from_height_range
+            name: Horizontal launch from height → ground range
+            eq: R = v0 * sqrt(2*h/g)
+            rhs: R
+            variables:
+              R:  { unit: m, aliases: [range, horizontal_distance, distance] }
+              v0: { unit: "m/s", aliases: [speed, initial_speed, horizontal_speed] }
+              h:  { unit: m, aliases: [height, drop_height] }
+              g:  { unit: "m/s^2", source: constant, key: g }
+            tags:
+              - projectile
+              - horizontal
+              - from_height
+              - kinematics
+              - range
+            applicability:
+              requires_keywords_any:
+                - horizontal
+                - window
+                - building
+                - height
+                - drop
+                - range
+                - distance
+              excludes_keywords:
+                - angle
+                - incline
+                - air_resistance
+            rearrangements: false
+            priority: 0.95
+
+          - id: vertical_throw_max_height_abs
+            name: Vertical throw up from height → max height above ground
+            eq: h_top = h0 + (v0**2) / (2*g)
+            rhs: h_top
+            variables:
+              h_top: { unit: m, aliases: [max_height, apex_height, maximum_height] }
+              h0:    { unit: m, aliases: [initial_height, release_height] }
+              v0:    { unit: "m/s", aliases: [initial_speed, throw_speed] }
+              g:     { unit: "m/s^2", source: constant, key: g }
+            tags:
+              - vertical
+              - kinematics
+              - max_height
+              - apex
+            applicability:
+              requires_keywords_any:
+                - vertical
+                - straight up
+                - throw
+                - how high
+                - maximum
+            rearrangements: true
+            priority: 0.9
+
+          - id: vertical_throw_max_height_delta
+            name: Vertical throw up → height gain only
+            eq: dh = (v0**2) / (2*g)
+            rhs: dh
+            variables:
+              dh: { unit: m, aliases: [height_gain, rise, delta_h] }
+              v0: { unit: "m/s", aliases: [initial_speed, throw_speed] }
+              g:  { unit: "m/s^2", source: constant, key: g }
+            tags:
+              - vertical
+              - kinematics
+              - max_height
+              - apex
+            applicability:
+              requires_keywords_any:
+                - vertical
+                - straight up
+                - throw
+                - height gain
+                - rise
+                - maximum
+            rearrangements: true
+            priority: 0.7
+
+
+          - id: kin_v_t
+            name: v = v0 + a t
+            eq: v = v0 + a*t
+            rhs: v
+            variables:
+              v:  { unit: "m/s" }
+              v0: { unit: "m/s", aliases: [initial_velocity, initial_speed] }
+              a:  { unit: "m/s^2" }
+              t:  { unit: s, aliases: [time] }
+            tags:
+              - kinematics
+              - constant_accel
+              - velocity
+            applicability:
+              requires_keywords_any:
+                - velocity
+                - acceleration
+                - time
+                - kinematics
+                - motion
+            rearrangements: true
+            priority: 0.95
+
+          - id: kin_dx_t
+            name: Δx = v0 t + ½ a t²
+            eq: dx = v0*t + 0.5*a*(t**2)
+            rhs: dx
+            variables:
+              dx: { unit: m, aliases: [displacement, distance] }
+              v0: { unit: "m/s" }
+              a:  { unit: "m/s^2" }
+              t:  { unit: s }
+            tags:
+              - kinematics
+              - constant_accel
+              - displacement
+            applicability:
+              requires_keywords_any:
+                - displacement
+                - distance
+                - motion
+                - kinematics
+            rearrangements: true
+            priority: 0.9
+
+          - id: kin_v2
+            name: v = sqrt(v0^2 + 2 a Δx)
+            eq: v = sqrt(v0**2 + 2*a*dx)
+            rhs: v
+            variables:
+              v:  { unit: "m/s" }
+              v0: { unit: "m/s" }
+              a:  { unit: "m/s^2" }
+              dx: { unit: m }
+            tags:
+              - kinematics
+              - constant_accel
+            applicability:
+              requires_keywords_any:
+                - velocity
+                - displacement
+                - accelerate
+                - kinematics
+            rearrangements: true
+            priority: 0.9
+
+          - id: projectile_range_flat
+            name: Projectile range (flat ground)
+            eq: R = (v0**2 * sin(2*theta)) / g
+            rhs: R
+            variables:
+              R:     { unit: m }
+              v0:    { unit: "m/s", aliases: [launch_speed, initial_speed] }
+              theta: { unit: rad, aliases: [launch_angle, angle], normalize: true }
+              g:     { unit: "m/s^2", source: constant, key: g }
+            tags:
+              - projectile
+              - 2D
+              - constant_accel
+              - near_earth_surface
+              - range
+              - horizontal_range
+            applicability:
+              requires_keywords_any:
+                - projectile
+                - range
+                - horizontal range
+                - distance
+                - how far
+              excludes_keywords:
+                - air_resistance
+                - incline
+            rearrangements: false
+            priority: 0.9
+
+      dynamics:
+        formulas:
+
+          - id: newton2
+            name: Newton’s Second Law
+            eq: F = m * a
+            rhs: F
+            variables:
+              F: { unit: N }
+              m: { unit: kg }
+              a: { unit: "m/s^2" }
+            tags:
+              - force
+              - dynamics
+              - newton
+            applicability:
+              requires_keywords_any:
+                - force
+                - mass
+                - acceleration
+                - net
+            rearrangements: true
+            priority: 1.0
+
+          - id: friction
+            name: Kinetic friction
+            eq: Fk = mu_k * N
+            rhs: Fk
+            variables:
+              Fk:   { unit: N }
+              mu_k: { unit: dimensionless, aliases: [mu_k, coefficient_of_kinetic_friction, coefficient] }
+              N:    { unit: N, aliases: [normal_force, normal] }
+            tags:
+              - friction
+              - dynamics
+            applicability:
+              requires_keywords_any:
+                - friction
+                - kinetic
+            rearrangements: true
+            priority: 0.6
+
+      energy_power:
+        formulas:
+
+          - id: work_constant_force
+            name: Work by constant force (1D, parallel)
+            eq: W = F * d
+            rhs: W
+            variables:
+              W: { unit: J }
+              F: { unit: N }
+              d: { unit: m }
+            tags:
+              - work
+              - energy
+            applicability:
+              requires_keywords_any:
+                - work
+                - force
+                - distance
+            rearrangements: true
+            priority: 0.8
+
+          - id: kinetic_energy
+            name: Kinetic energy
+            eq: KE = 0.5 * m * v**2
+            rhs: KE
+            variables:
+              KE: { unit: J }
+              m:  { unit: kg }
+              v:  { unit: "m/s" }
+            tags:
+              - energy
+              - motion
+            applicability:
+              requires_keywords_any:
+                - kinetic
+                - energy
+            rearrangements: false
+            priority: 0.9
+
+          - id: gravitational_pe
+            name: Gravitational potential energy (near Earth)
+            eq: PE = m * g * h
+            rhs: PE
+            variables:
+              PE: { unit: J }
+              m:  { unit: kg }
+              g:  { unit: "m/s^2", source: constant, key: g }
+              h:  { unit: m, aliases: [height] }
+            tags:
+              - energy
+              - potential
+            applicability:
+              requires_keywords_any:
+                - potential
+                - height
+                - energy
+            rearrangements: false
+            priority: 0.9
+
+          - id: power_work_time
+            name: Power from work and time
+            eq: P = W / t
+            rhs: P
+            variables:
+              P: { unit: W }
+              W: { unit: J }
+              t: { unit: s }
+            tags:
+              - power
+              - energy
+              - rate
+            applicability:
+              requires_keywords_any:
+                - power
+                - work rate
+            rearrangements: true
+            priority: 0.7
+
+      momentum_collisions:
+        formulas:
+
+          - id: momentum_linear
+            name: Linear momentum
+            eq: p = m * v
+            rhs: p
+            variables:
+              p: { unit: "kg*m/s" }
+              m: { unit: kg }
+              v: { unit: "m/s" }
+            tags:
+              - momentum
+              - collisions
+            applicability:
+              requires_keywords_any:
+                - momentum
+                - collision
+                - impulse
+            rearrangements: true
+            priority: 0.7
+
+          - id: impulse
+            name: Impulse-momentum theorem
+            eq: J = F * dt
+            rhs: J
+            variables:
+              J:  { unit: "N*s" }
+              F:  { unit: N }
+              dt: { unit: s, aliases: [time_interval] }
+            tags:
+              - impulse
+              - momentum
+            applicability:
+              requires_keywords_any:
+                - impulse
+                - change in momentum
+            rearrangements: true
+            priority: 0.6
+
+      circular_gravitation:
+        formulas:
+
+          - id: centripetal_accel
+            name: Centripetal acceleration
+            eq: a_c = v**2 / r
+            rhs: a_c
+            variables:
+              a_c: { unit: "m/s^2" }
+              v:   { unit: "m/s" }
+              r:   { unit: m }
+            tags:
+              - circular
+              - rotation
+            applicability:
+              requires_keywords_any:
+                - circular motion
+                - centripetal
+            rearrangements: true
+            priority: 0.7
+
+          - id: newton_gravitation
+            name: Newton’s law of gravitation
+            eq: F = GmM / r2
+            rhs: F
+            variables:
+              F:  { unit: N }
+              GmM: { unit: "N*m^2/kg^2", aliases: [GM_over] }  # NOTE: keep simple; or break as G*m1*m2 / r^2 in next formula
+              r2: { unit: "m^2" }
+            tags:
+              - gravitation
+            applicability:
+              requires_keywords_any:
+                - gravity
+                - gravitation
+                - attraction
+            rearrangements: false
+            priority: 0.3
+
+          - id: newton_gravitation_explicit
+            name: Newton gravitation (expanded)
+            eq: F = (G * m1 * m2) / (r**2)
+            rhs: F
+            variables:
+              F:  { unit: N }
+              G:  { unit: "N*m^2/kg^2", aliases: [gravitational_constant] }
+              m1: { unit: kg }
+              m2: { unit: kg }
+              r:  { unit: m }
+            tags:
+              - gravitation
+            applicability:
+              requires_keywords_any:
+                - gravity
+                - gravitation
+                - attraction
+            rearrangements: false
+            priority: 0.9
+
+      waves_sound_light:
+        formulas:
+
+          - id: wave_speed
+            name: Wave speed relation
+            eq: v = f * lambda
+            rhs: v
+            variables:
+              v:      { unit: "m/s" }
+              f:      { unit: "1/s", aliases: [frequency] }
+              lambda: { unit: m, aliases: [wavelength] }
+            tags:
+              - waves
+              - sound
+              - light
+            applicability:
+              requires_keywords_any:
+                - wave
+                - frequency
+                - wavelength
+                - speed
+            rearrangements: true
+            priority: 0.9
+
+          - id: snells_law_theta2
+            name: Snell’s law (solve theta2)
+            eq: theta2 = asin( (n1/n2) * sin(theta1) )
+            rhs: theta2
+            variables:
+              theta2: { unit: rad }
+              n1:     { unit: dimensionless, aliases: [n_in] }
+              n2:     { unit: dimensionless, aliases: [n_out] }
+              theta1: { unit: rad }
+            tags:
+              - optics
+              - refraction
+              - snell
+            applicability:
+              requires_keywords_any:
+                - refraction
+                - snell
+                - medium
+            rearrangements: false
+            priority: 0.7
+
+      electricity_magnetism:
+        formulas:
+
+          - id: ohms_law
+            name: Ohm’s law
+            eq: V = I * R
+            rhs: V
+            variables:
+              V: { unit: V }
+              I: { unit: A }
+              R: { unit: ohm, aliases: ["Ω", "Ohm"] }
+            tags:
+              - circuits
+              - electricity
+            applicability:
+              requires_keywords_any:
+                - ohm
+                - voltage
+                - current
+                - resistance
+                - circuit
+            rearrangements: true
+            priority: 1.0
+
+          - id: electric_power
+            name: Electric power
+            eq: P = V * I
+            rhs: P
+            variables:
+              P: { unit: W }
+              V: { unit: V }
+              I: { unit: A }
+            tags:
+              - power
+              - electricity
+            applicability:
+              requires_keywords_any:
+                - power
+                - electric
+                - circuit
+            rearrangements: true
+            priority: 0.9
+
+          - id: series_resistors
+            name: Series resistors
+            eq: R_total = R1 + R2
+            rhs: R_total
+            variables:
+              R_total: { unit: ohm }
+              R1: { unit: ohm }
+              R2: { unit: ohm }
+            tags:
+              - circuits
+              - series
+            applicability:
+              requires_keywords_any:
+                - series
+                - resistors
+            rearrangements: true
+            priority: 0.6
+
+          - id: parallel_resistors_two
+            name: Parallel resistors (two)
+            eq: R_total = (R1*R2) / (R1 + R2)
+            rhs: R_total
+            variables:
+              R_total: { unit: ohm }
+              R1: { unit: ohm }
+              R2: { unit: ohm }
+            tags:
+              - circuits
+              - parallel
+            applicability:
+              requires_keywords_any:
+                - parallel
+                - resistors
+            rearrangements: false
+            priority: 0.7
+
+          - id: coulombs_law
+            name: Coulomb’s law (magnitude)
+            eq: F = k_e * (q1*q2) / (r**2)
+            rhs: F
+            variables:
+              F:  { unit: N }
+              k_e: { unit: "N*m^2/C^2", source: constant, key: k_e }
+              q1: { unit: C }
+              q2: { unit: C }
+              r:  { unit: m }
+            tags:
+              - electric_force
+              - electrostatics
+            applicability:
+              requires_keywords_any:
+                - coulomb
+                - charge
+                - electrostatic
+                - force
+            rearrangements: false
+            priority: 0.8
+
+      thermodynamics_optional:
+        formulas:
+
+          - id: specific_heat
+            name: Heat transfer (no phase change)
+            eq: Q = m * c_s * dT
+            rhs: Q
+            variables:
+              Q:   { unit: J }
+              m:   { unit: kg }
+              c_s: { unit: "J/(kg*K)", aliases: [specific_heat] }
+              dT:  { unit: K, aliases: [delta_T] }
+            tags:
+              - thermo
+              - heat
+            applicability:
+              requires_keywords_any:
+                - heat
+                - temperature change
+                - specific heat
+            rearrangements: true
+            priority: 0.5
